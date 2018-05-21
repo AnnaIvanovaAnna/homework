@@ -5,7 +5,7 @@ import argparse
  
 s= socket(AF_INET,SOCK_STREAM)
 
-def Create():
+def create():
     parser = argparse.ArgumentParser()
     parser.add_argument ('-a','--address')
     parser.add_argument ('-p','--port',type=int)
@@ -13,27 +13,27 @@ def Create():
     return parser
 
 if __name__ == '__main__':
-    parser = Create()
+    parser = create()
     name= parser.parse_args()
 
-b,c=None,None
+addr,port=None,None
 
 if name.address:
-    b=name.address
+    addr=name.address
 else:
-    b=' '
+    addr=' '
 if name.port:
-    c=name.port
+    port=name.port
 else:
-    c=7777
+    port=7777
 
-s.bind((b,c))
+s.bind((addr,port))
 s.listen(2)
 
 
 while True:
-    client, addr = s.accept()
-    print('Получен запрос на соеднение от' ,str(addr))
+    client, addr_client = s.accept()
+    print('Получен запрос на соеднение от' ,str(addr_client))
     message=client.recv(1024)
     if message:
         response_message={
