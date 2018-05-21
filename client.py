@@ -5,7 +5,7 @@ import argparse
 
 s = socket (AF_INET,SOCK_STREAM)
 
-def Create():
+def create():
     parser = argparse.ArgumentParser()
     parser.add_argument ('-a','--address')
     parser.add_argument ('-p','--port',type=int)
@@ -16,17 +16,17 @@ if __name__ == '__main__':
     parser = Create()
     name= parser.parse_args()
 
-b,c=None,None
+addr,port=None,None
 
 if name.address:
-    b=name.address
+    addr=name.address
 else:
-    b='localhost'
+    addr='localhost'
 if name.port:
-    c=name.port
+    port=name.port
 else:
-    c=7777
-s.connect((b,c))
+    port=7777
+s.connect((addr,port))
 
 presense_message={
     'action':'presense',
