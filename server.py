@@ -13,7 +13,7 @@ def create():
     return parser
 
 if __name__ == '__main__':
-    parser = Create()
+    parser = create()
     name= parser.parse_args()
 
 addr,port=None,None
