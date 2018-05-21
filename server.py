@@ -32,8 +32,8 @@ s.listen(2)
 
 
 while True:
-    client, addr = s.accept()
-    print('Получен запрос на соеднение от' ,str(addr))
+    client, addr_client = s.accept()
+    print('Получен запрос на соеднение от' ,str(addr_client))
     message=client.recv(1024)
     if message:
         response_message={
