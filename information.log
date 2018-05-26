@@ -1,0 +1,12 @@
+2018-05-26 16:08:54,386 INFO       <module>   Information
+2018-05-26 16:08:54,386 WARNING    <module>   Warning
+2018-05-26 16:08:54,386 CRITICAL   <module>   Critical
+2018-05-26 16:10:22,119 INFO       модуль2    <module>   Information
+2018-05-26 16:10:22,119 WARNING    модуль2    <module>   Warning
+2018-05-26 16:10:22,119 CRITICAL   модуль2    <module>   Critical
+2018-05-26 16:14:08,558 INFO       модуль2    main       Information
+2018-05-26 16:14:08,558 WARNING    модуль2    main       Warning
+2018-05-26 16:14:08,558 CRITICAL   модуль2    main       Critical
+2018-05-26 16:14:19,541 INFO       модуль2    main       Information
+2018-05-26 16:14:19,541 WARNING    модуль2    main       Warning
+2018-05-26 16:14:19,541 CRITICAL   модуль2    main       Critical
