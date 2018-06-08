@@ -10,7 +10,7 @@ class Create():
         parser = argparse.ArgumentParser()
         parser.add_argument ('-a','--address')
         parser.add_argument ('-p','--port',type=int)
-        parser.add_argument('-w','--write'), #required=True)
+        parser.add_argument('-r','--read'), #required=True)
         return parser
     def get_parser(self):
         parser = self.create()
@@ -25,7 +25,6 @@ class Create():
         else:
             port=7777
         return addr,port
-   
 
 class Presense_msg():
     def __init__(self):
@@ -47,7 +46,6 @@ class Presense_msg():
         response=json.loads(response)
         print(response['response'],response['time'])
 
-
 class Message_client():
     def __init__(self):
         pass
@@ -57,10 +55,13 @@ class Message_client():
             s.connect((result[0],result[1]))
             Presense_msg().send_presense_message(s)
             while True:
-                message = input('Введите сообщение: ')
-                if message ==' ':
-                    break
-                s.send(message.encode('ascii'))     
+                try:
+                    resp = s.recv(1024)
+                    resp= resp.decode('ascii')
+                    print('Ответ:', resp)
+                except:
+                    print('Error')
+        
 
 if __name__ == '__main__':
     do=Message_client()
