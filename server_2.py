@@ -4,9 +4,12 @@ import json
 import argparse
 import select
 import logging
-import log_config
- 
+#import log_config
+import sqlite3
+import datetime
+
 log = logging.getLogger('server')
+now=datetime.datetime.now()
 
 class Create():
     def __init__(self):
@@ -43,6 +46,7 @@ class Presense_msg():
         pass
     def get_presense_message(self,client):
         message=client.recv(1024)
+        message=message.decode('ascii')
         if message:
             response_message={
                 'response':'Соединение установлено',
@@ -55,6 +59,8 @@ class Presense_msg():
                 }
         response_message=json.dumps(response_message)
         client.send(response_message.encode('utf-8'))
+
+
 
 class Read_msg():
     def __init__(self):
@@ -93,6 +99,12 @@ class Mainloop():
                 Presense_msg().get_presense_message(client)
                 print('Получен запрос на соединение от' ,str(addr_client))
                 clients.append(client)
+                with sqlite3.connect(r'C:\Users\пользователь\Desktop\sqlite\sql.sqlite') as conn:
+                    cursor = conn.cursor()
+                    cursor.execute('insert into Client  (LogIn,Information) values (?,?)',(addr_client[1],'online'))
+                    cursor.execute ('insert into ContactList(clientID,contactID) values (?,?)',(addr_client[1],addr_client[1])) 
+                    cursor.execute ('insert into ClientHistory(Time,IP_address) values (?,?)',(now.strftime("%H:%M:%S"),addr_client[0]))
+                    conn.commit()
             except OSError as error:
                 pass 
             finally:
@@ -109,8 +121,12 @@ class Mainloop():
                     print('Слушают:',readers)
                 except:
                     pass
-    
+   
+
 if __name__ == '__main__':
     print("On!")
     do=Mainloop()
+
     do.mainloop()
+
+
