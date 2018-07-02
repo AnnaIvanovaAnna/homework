@@ -4,9 +4,9 @@ import json
 import argparse
 import select
 import logging
-#import log_config
 import sqlite3
 import datetime
+import threading
 
 log = logging.getLogger('server')
 now=datetime.datetime.now()
@@ -59,8 +59,7 @@ class Presense_msg():
                 }
         response_message=json.dumps(response_message)
         client.send(response_message.encode('utf-8'))
-
-
+        return response_message
 
 class Read_msg():
     def __init__(self):
@@ -86,6 +85,10 @@ class Read_msg():
             all_clients.remove(client)
         return client
 
+def client_2(address_client):
+    print('Сервер запущен в потоке',threading.Thread().getName())
+    print('Получен запрос на соединение от',str(address_client))
+    
 
 class Mainloop():
     def __init__(self):
@@ -97,11 +100,13 @@ class Mainloop():
             try:
                 client, addr_client = s.accept()
                 Presense_msg().get_presense_message(client)
-                print('Получен запрос на соединение от' ,str(addr_client))
+                my_thread = threading.Thread(target=client_2,args=(str(addr_client),))
+                my_thread.daemon=True
+                my_thread.start()
                 clients.append(client)
                 with sqlite3.connect(r'C:\Users\пользователь\Desktop\sqlite\sql.sqlite') as conn:
                     cursor = conn.cursor()
-                    cursor.execute('insert into Client  (LogIn,Information) values (?,?)',(addr_client[1],'online'))
+                    cursor.execute('insert into Client (LogIn,Information) values (?,?)',(addr_client[1],'online'))
                     cursor.execute ('insert into ContactList(clientID,contactID) values (?,?)',(addr_client[1],addr_client[1])) 
                     cursor.execute ('insert into ClientHistory(Time,IP_address) values (?,?)',(now.strftime("%H:%M:%S"),addr_client[0]))
                     conn.commit()
