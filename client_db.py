@@ -27,8 +27,21 @@ class ContactList(Base):
     def __repr__(self):
         return "Contact name {}".format(self.contact_name)
 
+class LogIn(Base):
+    __tablename__='LogIn'
+    id=Column(Integer, primary_key=True)
+    Login_name=Column(String)
+    Password=Column(String)
+    def __init__(self,login,password):
+        self.Login_name=login
+        self.Password=password
+    def __repr__(self):
+        return'LoginName {}'.format(self.Login_name)
+
 Base.metadata.create_all(engine)
 session=Session()
 
-m=ContactList('Maria')
-print(m.__repr__)
+#conn = engine.connect()
+#trans = conn.begin()
+#conn.execute('DELETE FROM "LogIn"')
+#trans.commit()
